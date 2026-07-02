@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Section, SectionHeader } from "./Section";
 import { PROJECTS } from "@/data/portfolio";
 import { FiExternalLink, FiGithub, FiArrowUpRight } from "react-icons/fi";
@@ -47,7 +48,14 @@ export const Projects = () => (
                             ))}
                         </div>
 
-                        <div className="mt-8 flex items-center gap-4">
+                        <div className="mt-8 flex items-center gap-4 flex-wrap">
+                            <Link
+                                to={`/projects/${p.slug}`}
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-brand text-black font-mono text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-brand-hover transition-colors"
+                                data-testid={`project-case-study-${i}`}
+                            >
+                                Read case study →
+                            </Link>
                             {p.github && (
                                 <a
                                     href={p.github}
@@ -55,6 +63,7 @@ export const Projects = () => (
                                     rel="noreferrer"
                                     className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-zinc-200 hover:text-brand transition-colors"
                                     data-testid={`project-github-${i}`}
+                                    onClick={(e) => e.stopPropagation()}
                                 >
                                     <FiGithub /> Code
                                 </a>

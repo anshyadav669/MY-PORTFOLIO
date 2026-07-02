@@ -11,6 +11,7 @@ from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone
 import httpx
+import resend
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -18,6 +19,13 @@ load_dotenv(ROOT_DIR / '.env')
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
+
+# Resend config
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+SENDER_EMAIL = os.environ.get('SENDER_EMAIL', 'onboarding@resend.dev')
+RECIPIENT_EMAIL = os.environ.get('RECIPIENT_EMAIL')
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
 
 app = FastAPI(title="Ansh Portfolio API")
 api_router = APIRouter(prefix="/api")
@@ -72,6 +80,60 @@ async def root():
 
 
 # ------------------- Contact form -------------------
+def _build_contact_email_html(msg: "ContactMessage") -> str:
+    safe_subject = (msg.subject or "(no subject)").strip()
+    return f"""
+    <table width="100%" cellpadding="0" cellspacing="0" style="font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; background:#f4f4f5; padding:24px;">
+      <tr><td align="center">
+        <table width="560" cellpadding="0" cellspacing="0" style="background:#0A0A0A; border:1px solid #1F1F1F; padding:32px; color:#F4F4F5;">
+          <tr><td>
+            <div style="font-size:10px; letter-spacing:0.3em; text-transform:uppercase; color:#CCFF00; margin-bottom:12px;">new · contact submission</div>
+            <h1 style="font-family:'Outfit', Arial, sans-serif; font-size:24px; margin:0 0 20px; color:#F4F4F5;">Someone reached out via your portfolio</h1>
+            <table cellpadding="0" cellspacing="0" width="100%" style="border-top:1px solid #1F1F1F; margin-top:8px;">
+              <tr><td style="padding:14px 0; border-bottom:1px solid #1F1F1F;">
+                <div style="font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:#71717A;">Name</div>
+                <div style="font-size:15px; color:#F4F4F5; margin-top:4px;">{msg.name}</div>
+              </td></tr>
+              <tr><td style="padding:14px 0; border-bottom:1px solid #1F1F1F;">
+                <div style="font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:#71717A;">Email</div>
+                <div style="font-size:15px; color:#CCFF00; margin-top:4px;">{msg.email}</div>
+              </td></tr>
+              <tr><td style="padding:14px 0; border-bottom:1px solid #1F1F1F;">
+                <div style="font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:#71717A;">Subject</div>
+                <div style="font-size:15px; color:#F4F4F5; margin-top:4px;">{safe_subject}</div>
+              </td></tr>
+              <tr><td style="padding:14px 0;">
+                <div style="font-size:10px; letter-spacing:0.25em; text-transform:uppercase; color:#71717A;">Message</div>
+                <div style="font-size:14px; color:#D4D4D8; margin-top:8px; line-height:1.6; white-space:pre-wrap;">{msg.message}</div>
+              </td></tr>
+            </table>
+            <div style="margin-top:24px; font-size:11px; color:#52525B;">Sent {msg.created_at.strftime('%Y-%m-%d %H:%M UTC')} · Reply directly to this email to respond to {msg.name}.</div>
+          </td></tr>
+        </table>
+      </td></tr>
+    </table>
+    """
+
+
+async def _send_contact_email(msg: "ContactMessage") -> Optional[str]:
+    """Fire-and-log email send. Returns email id on success, None otherwise."""
+    if not RESEND_API_KEY or not RECIPIENT_EMAIL:
+        return None
+    params = {
+        "from": f"Portfolio <{SENDER_EMAIL}>",
+        "to": [RECIPIENT_EMAIL],
+        "reply_to": msg.email,
+        "subject": f"[Portfolio] {msg.subject or 'New message'} — from {msg.name}",
+        "html": _build_contact_email_html(msg),
+    }
+    try:
+        sent = await asyncio.to_thread(resend.Emails.send, params)
+        return sent.get("id") if isinstance(sent, dict) else None
+    except Exception as e:
+        logger.error(f"Resend email send failed: {e}")
+        return None
+
+
 @api_router.post("/contact")
 async def create_contact(payload: ContactCreate):
     msg = ContactMessage(**payload.model_dump())
@@ -79,7 +141,14 @@ async def create_contact(payload: ContactCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     await db.contact_messages.insert_one(doc)
     logger.info(f"New contact message from {msg.email}")
-    return {"status": "success", "id": msg.id, "message": "Message received. I'll get back to you soon!"}
+
+    email_id = await _send_contact_email(msg)
+    return {
+        "status": "success",
+        "id": msg.id,
+        "message": "Message received. I'll get back to you soon!",
+        "email_sent": bool(email_id),
+    }
 
 
 @api_router.get("/contact")

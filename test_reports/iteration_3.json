@@ -1,0 +1,43 @@
+{
+  "summary": "Iteration 3 tested two new features: (1) Resend email integration on POST /api/contact and (2) case-study routes /projects/:slug. All 9 backend pytest cases pass and every frontend flow verified end-to-end. email_sent boolean returns true confirming Resend delivery to verified recipient. Case study pages render fully with correct titles, arch steps, decisions, learnings, code snippets, next-project link, back/CTA/nav links. Unknown slug redirects to /. Home-page regression sections (hero..contact + heatmap) all present.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "GET /api/ -> 200",
+    "POST /api/contact with valid data -> 200, status=success, id present, email_sent=true (Resend live)",
+    "POST /api/contact invalid email -> 422",
+    "POST /api/contact missing fields -> 422",
+    "POST /api/contact persists to MongoDB contact_messages (GET /api/contact returns record, no _id field)",
+    "Regression: /api/github/stats, /api/github/contributions (365 days), /api/leetcode/stats, /api/codechef/stats all responding",
+    "Home page: project-case-study-0 and project-case-study-1 present with 'READ CASE STUDY →' label",
+    "Home sections #home #about #skills #cp #github #projects #experience #contact all render",
+    "Click case-study-0 -> navigates to /projects/rag-chatbot, project-detail-title = 'RAG Chatbot.'",
+    "rag-chatbot page: case-section-01..07 all present, 6 arch-step-* cards, 4 decision-* cards, 3 learning-* items, code-snippet contains python + vector_db",
+    "next-project-link href = /projects/todo-web-app; back-to-projects href = /#projects; detail-cta-contact href = /#contact; detail-github-btn present; nav-home-link + nav-about-link + theme-toggle present on detail page",
+    "/projects/todo-web-app renders title 'To-Do List Web App.', 4 arch steps, javascript snippet with localStorage",
+    "/projects/does-not-exist redirects back to /",
+    "Contact form UI submit: response status=200, body={status:success, id, email_sent:true}, toast 'Message sent. I\\'ll get back to you shortly.' shown"
+  ],
+  "failed": [],
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_contact_email.py",
+    "/app/test_reports/pytest/iteration_3.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py: RESEND_API_KEY is committed to /app/backend/.env in plaintext. This is fine for the preview sandbox but should be rotated before any public deploy — it is a live production Resend key.",
+    "server.py _send_contact_email logs on failure and returns None, so the POST still returns 200 with email_sent:false — matches the requested non-blocking design. Good.",
+    "server.py POST /api/contact does not sanitize/escape user-supplied message before injecting into HTML email (potential HTML injection into inbox). Not a security bug for the site itself, but consider html.escape() before formatting to keep email rendering safe.",
+    "ProjectDetail.jsx early-returns <Navigate to='/' /> for unknown slug — correct. Consider also handling the case where PROJECTS has a single entry (currently next wraps modulo-index which could equal current; guard `next.slug !== project.slug` is in place). Good.",
+    "Route wiring in App.js works but ProjectDetailWithToaster wraps ProjectDetail + ThemedToaster in a fragment; both Home and detail render their own Toaster — no duplicate mount observed since they're on separate routes. OK."
+  ],
+  "updated_files": ["/app/backend/tests/test_contact_email.py"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "n/a (public portfolio, no auth). Resend recipient (verified sandbox): anshayk2006@gmail.com — did NOT inspect inbox as instructed.",
+  "seed_data_creation": "3 TEST_-prefixed contact messages inserted into contact_messages during backend tests (TEST_Iter3 Email, TEST_Iter3_persist_*, TEST_Bad-attempted); 1 more from UI submission (TEST_Iter3 UI). Safe to delete.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Resend is fully live in preview and delivers to anshayk2006@gmail.com. email_sent boolean in POST /api/contact response is authoritative (Resend id present). Case-study routes /projects/rag-chatbot and /projects/todo-web-app both work; unknown slugs redirect to /. All new testids: project-case-study-{0,1}, project-detail-page, project-detail-title, back-to-projects, detail-github-btn, detail-demo-btn, arch-step-01..06, code-snippet, decision-{i}, learning-{i}, next-project-link, detail-cta-contact, case-section-{01..07}.",
+  "rca of the issue": "No issues found."
+}

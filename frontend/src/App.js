@@ -15,6 +15,7 @@ import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { ScrollProgress, BackToTop } from "@/components/portfolio/Chrome";
 import { ThemeProvider, useTheme } from "@/lib/theme";
+import ProjectDetail from "@/pages/ProjectDetail";
 
 const ThemedToaster = () => {
     const { theme } = useTheme();
@@ -62,10 +63,18 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/projects/:slug" element={<ProjectDetailWithToaster />} />
                 </Routes>
             </BrowserRouter>
         </ThemeProvider>
     );
 }
+
+const ProjectDetailWithToaster = () => (
+    <>
+        <ProjectDetail />
+        <ThemedToaster />
+    </>
+);
 
 export default App;
