@@ -14,7 +14,27 @@ import { Experience } from "@/components/portfolio/Experience";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { ScrollProgress, BackToTop } from "@/components/portfolio/Chrome";
-import { ThemeProvider } from "@/lib/theme";
+import { ThemeProvider, useTheme } from "@/lib/theme";
+
+const ThemedToaster = () => {
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
+    return (
+        <Toaster
+            theme={theme}
+            position="bottom-right"
+            toastOptions={{
+                style: {
+                    background: isDark ? "#0A0A0A" : "#FFFFFF",
+                    border: `1px solid ${isDark ? "#1F1F1F" : "#E4E4E7"}`,
+                    color: isDark ? "#F4F4F5" : "#18181B",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    borderRadius: 0,
+                },
+            }}
+        />
+    );
+};
 
 const Home = () => (
     <div className="min-h-screen bg-ink-900 text-zinc-100 font-mono selection:bg-brand selection:text-black">
@@ -32,19 +52,7 @@ const Home = () => (
         </main>
         <Footer />
         <BackToTop />
-        <Toaster
-            theme="dark"
-            position="bottom-right"
-            toastOptions={{
-                style: {
-                    background: "#0A0A0A",
-                    border: "1px solid #1F1F1F",
-                    color: "#F4F4F5",
-                    fontFamily: "'JetBrains Mono', monospace",
-                    borderRadius: 0,
-                },
-            }}
-        />
+        <ThemedToaster />
     </div>
 );
 

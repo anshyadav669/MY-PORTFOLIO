@@ -20,15 +20,18 @@ Ansh Kumar Yadav — a Civil Engineering undergrad who codes: freelance web dev,
 - Backend endpoints:
   - `GET /api/` — health
   - `GET /api/github/stats` — profile + aggregates + top languages + top repos (`anshyadav669`)
+  - `GET /api/github/contributions` — 365-day contribution calendar via public jogruber.de API
   - `GET /api/leetcode/stats` — GraphQL to leetcode.com (`AnshKumarYadav`), returns solved by difficulty + contest rating
   - `GET /api/codechef/stats` — HTML scrape of `loop_hole39` profile, derives stars from rating band
   - `POST /api/contact` + `GET /api/contact` — save/list messages
-- Frontend sections: Nav, Hero (typing animation), About (+Education timeline), Skills (progress bars + tools marquee), Competitive Programming (LeetCode + CodeChef bento), GitHub Stats (bento + repos grid), Projects, Experience + Achievements, Contact form (validated), Footer.
-- Global chrome: sticky glass nav, scroll progress bar, back-to-top button, sonner toast provider.
-- SEO: meta description, OG tags, Twitter card, canonical, title, favicon area.
+- Frontend sections: Nav (with theme toggle), Hero (typing animation), About (+Education timeline), Skills (progress bars + tools marquee), Competitive Programming (LeetCode + CodeChef bento), GitHub Stats (bento + contribution heatmap + repos grid), Projects, Experience + Achievements, Contact form (validated), Footer.
+- Global chrome: sticky glass nav, scroll progress bar, back-to-top button, themed sonner toasts.
+- **Dark/Light theme toggle** with localStorage persistence — data-theme attribute on <html> + Tailwind dark class. Lime accent (#CCFF00) in dark; darker olive (#4A7100) for text in light mode; buttons stay lime in both.
+- SEO: meta description, OG tags, Twitter card, canonical, title.
 
 ## Testing
-- Backend + Frontend fully tested via testing_agent_v3, iteration 1 — **100% pass** (`/app/test_reports/iteration_1.json`).
+- iteration_1: backend + frontend 100% pass
+- iteration_2 (heatmap + theme toggle): backend + frontend 100% pass
 
 ## Backlog (P0/P1/P2)
 - **P1**: Add LinkedIn scraping / manual "Certifications" section when Ansh provides them.
