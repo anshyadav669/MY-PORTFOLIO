@@ -21,17 +21,26 @@ Ansh Kumar Yadav — a Civil Engineering undergrad who codes: freelance web dev,
   - `GET /api/` — health
   - `GET /api/github/stats` — profile + aggregates + top languages + top repos (`anshyadav669`)
   - `GET /api/github/contributions` — 365-day contribution calendar via public jogruber.de API
-  - `GET /api/leetcode/stats` — GraphQL to leetcode.com (`AnshKumarYadav`), returns solved by difficulty + contest rating
-  - `GET /api/codechef/stats` — HTML scrape of `loop_hole39` profile, derives stars from rating band
-  - `POST /api/contact` + `GET /api/contact` — save/list messages
-- Frontend sections: Nav (with theme toggle), Hero (typing animation), About (+Education timeline), Skills (progress bars + tools marquee), Competitive Programming (LeetCode + CodeChef bento), GitHub Stats (bento + contribution heatmap + repos grid), Projects, Experience + Achievements, Contact form (validated), Footer.
-- Global chrome: sticky glass nav, scroll progress bar, back-to-top button, themed sonner toasts.
-- **Dark/Light theme toggle** with localStorage persistence — data-theme attribute on <html> + Tailwind dark class. Lime accent (#CCFF00) in dark; darker olive (#4A7100) for text in light mode; buttons stay lime in both.
-- SEO: meta description, OG tags, Twitter card, canonical, title.
+  - `GET /api/leetcode/stats` — GraphQL to leetcode.com (`AnshKumarYadav`)
+  - `GET /api/codechef/stats` — HTML scrape of `loop_hole39`, stars derived from rating
+  - `POST /api/contact` + `GET /api/contact` — save/list messages + **Resend email notification** (non-blocking; returns `email_sent` boolean; HTML-escapes user input)
+- Frontend routes:
+  - `/` — single-page portfolio (Nav, Hero, About+Education, Skills, Competitive Programming, GitHub Stats + heatmap, Projects, Experience, Contact, Footer)
+  - `/projects/:slug` — deep-dive case study page per project
+- Global chrome: sticky glass nav, scroll progress bar, back-to-top button, themed sonner toasts, dark/light theme toggle with localStorage persistence.
+- Case studies: rich narrative structure (Problem → Approach → Architecture → Code walkthrough → Tech decisions → What it does → What I learned) with CSS-only hero visuals (no external images), inter-project navigation, and CTA back to contact.
+- Resend integration: HTML email with the brand look, `reply_to` set to visitor's email, sandbox recipient `anshayk2006@gmail.com`.
 
 ## Testing
-- iteration_1: backend + frontend 100% pass
-- iteration_2 (heatmap + theme toggle): backend + frontend 100% pass
+- iteration_1: 100% pass
+- iteration_2 (heatmap + theme toggle): 100% pass
+- iteration_3 (Resend + case studies): 100% pass
+
+## Backlog (P1/P2)
+- P1: Verify a domain in Resend to send email FROM `contact@ansh.dev` and TO any recipient.
+- P1: Add Certifications section when provided.
+- P2: Real screenshots / live GitHub README embed in case studies.
+- P2: Blog / writing section.
 
 ## Backlog (P0/P1/P2)
 - **P1**: Add LinkedIn scraping / manual "Certifications" section when Ansh provides them.
