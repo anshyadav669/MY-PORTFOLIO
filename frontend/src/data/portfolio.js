@@ -7,7 +7,8 @@ export const PROFILE = {
     headline: "Software Developer · Competitive Programmer",
     subheadline: "Building web apps, RAG systems, and solving hard problems.",
     location: "Silchar, Assam · India",
-    email: "ansh-ug-24@civil.nits.ac.in",
+    email: "ansh_ug_24@civil.nits.ac.in",
+    personalEmail: "anshayk2006@gmail.com",
     phone: "+91 99289 43270",
     resumeUrl: "/AnshResume.pdf",
     about: [

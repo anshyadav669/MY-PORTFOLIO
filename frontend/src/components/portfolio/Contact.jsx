@@ -54,7 +54,8 @@ export const Contact = () => {
                     </p>
 
                     <div className="space-y-4">
-                        <ContactRow icon={<FiMail />} label="Email" value={PROFILE.email} href={`mailto:${PROFILE.email}`} testId="contact-email-row" />
+                        <ContactRow icon={<FiMail />} label="Institute email" value={PROFILE.email} href={`mailto:${PROFILE.email}`} testId="contact-email-row" />
+                        <ContactRow icon={<FiMail />} label="Personal email" value={PROFILE.personalEmail} href={`mailto:${PROFILE.personalEmail}`} testId="contact-personal-email-row" />
                         <ContactRow icon={<FiPhone />} label="Phone" value={PROFILE.phone} href={`tel:${PROFILE.phone}`} testId="contact-phone-row" />
                         <ContactRow icon={<FiMapPin />} label="Location" value={PROFILE.location} testId="contact-location-row" />
                     </div>

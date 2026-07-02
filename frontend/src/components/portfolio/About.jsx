@@ -18,7 +18,11 @@ export const About = () => (
                         <FiMail className="text-brand" />
                         <span className="font-mono text-xs text-zinc-300 group-hover:text-brand break-all">{PROFILE.email}</span>
                     </a>
-                    <a href={`tel:${PROFILE.phone}`} className="group flex items-center gap-3 border border-ink-600 hover:border-brand p-4 card-hover" data-testid="about-phone">
+                    <a href={`mailto:${PROFILE.personalEmail}`} className="group flex items-center gap-3 border border-ink-600 hover:border-brand p-4 card-hover" data-testid="about-personal-email">
+                        <FiMail className="text-brand" />
+                        <span className="font-mono text-xs text-zinc-300 group-hover:text-brand break-all">{PROFILE.personalEmail}</span>
+                    </a>
+                    <a href={`tel:${PROFILE.phone}`} className="group flex items-center gap-3 border border-ink-600 hover:border-brand p-4 card-hover sm:col-span-2" data-testid="about-phone">
                         <FiPhone className="text-brand" />
                         <span className="font-mono text-xs text-zinc-300 group-hover:text-brand">{PROFILE.phone}</span>
                     </a>
