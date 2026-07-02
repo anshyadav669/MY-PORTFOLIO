@@ -1,0 +1,103 @@
+{
+  "theme": {
+    "mode": "dark",
+    "archetype": "Archetype 7 (Electric & Neon) grounded in Archetype 4 (Swiss & High-Contrast)",
+    "description": "A god-tier developer portfolio blending the raw, technical aesthetic of a terminal with the premium, high-contrast layouts of top-tier SaaS companies. No generic purple/teal gradients. It relies on stark blacks, precise grid systems, and a singular, aggressive 'High-Vis Lime' accent to signal command-line mastery and performance.",
+    "colors": {
+      "base": {
+        "background": "#030303",
+        "surface": "#0A0A0A",
+        "surface_elevated": "#111111"
+      },
+      "brand": {
+        "primary": "#CCFF00",
+        "primary_hover": "#D9FF33",
+        "secondary": "#222222"
+      },
+      "text": {
+        "primary": "#F4F4F5",
+        "secondary": "#A1A1AA",
+        "muted": "#52525B",
+        "inverse": "#000000"
+      },
+      "border": {
+        "default": "#1F1F1F",
+        "focus": "#CCFF00",
+        "subtle": "rgba(255,255,255,0.05)"
+      }
+    },
+    "typography": {
+      "font_families": {
+        "heading": "'Outfit', sans-serif",
+        "body": "'JetBrains Mono', monospace",
+        "accent": "'JetBrains Mono', monospace"
+      },
+      "scale": {
+        "h1": "text-5xl sm:text-6xl tracking-tighter font-black",
+        "h2": "text-3xl sm:text-4xl tracking-tight font-bold",
+        "h3": "text-xl sm:text-2xl tracking-tight font-semibold",
+        "h4": "text-lg sm:text-xl font-medium",
+        "body_large": "text-base sm:text-lg leading-relaxed",
+        "body": "text-sm sm:text-base leading-relaxed",
+        "mono_small": "text-xs tracking-[0.2em] uppercase font-bold"
+      },
+      "instructions": "Use Outfit for massive impact headings. Use JetBrains Mono for all body text, navigational elements, and statistics to reinforce the 'developer' identity. Never center headings; maintain a strict left-aligned brutalist hierarchy."
+    }
+  },
+  "layout_and_spacing": {
+    "spacing_system": "Generous Spacing Philosophy. Use p-8 or p-12 for bento grid cards. Gap between major sections must be py-32.",
+    "grid_protocol": "MODE A: The 'Tetris' Grid for skills and platform stats (LeetCode, CodeChef, GitHub). Create aggressive asymmetry. Mix tall rectangles (col-span-1 row-span-2) with wide blocks (col-span-2 row-span-1).",
+    "surface_strategy": {
+      "cards": "Flat solid surfaces (bg-[#0A0A0A]) with a sharp 1px solid border (border-[#1F1F1F]). No soft drop shadows. Use inner borders or 'Retro-Futurism' terminal styling (e.g., lime green hover states).",
+      "glassmorphism": "Used ONLY for the floating sticky navigation: backdrop-blur-xl bg-black/60 with a bottom border of border-white/10.",
+      "hero_overlay": "Gradient overlay from bottom to top to blend background into solid #030303."
+    }
+  },
+  "components_and_interactions": {
+    "hero": {
+      "style": "Massive typography. Left aligned. Typing animation using JetBrains Mono with a blinking cursor (border-r-2 border-[#CCFF00]). Background should have a subtle dark geometric texture or a CSS grid with fading radial gradient at the mouse position."
+    },
+    "stats_dashboard": {
+      "style": "Bento grid for LeetCode, CodeChef, and GitHub stats. Use the 'Tracing Beam' effect on the card borders for hover states. Data must be live-fetched where possible, showing hard metrics (Problems Solved, Stars, Rating) in giant numbers using Outfit font."
+    },
+    "projects": {
+      "style": "Interactive cards with a raw technical feel. Image/mockup on top, monospace tags for tech stack below. On hover, image scales up slightly and border turns #CCFF00."
+    },
+    "skills": {
+      "style": "Avoid generic pill tags. Use a dense 'Control Room' grid (Mode B) with progress bars that animate from 0% to X% on scroll, filled with High-Vis Lime."
+    },
+    "timeline": {
+      "style": "Experience and Education displayed as a vertical Git commit tree. Nodes are hollow circles that fill with Lime when scrolled into view."
+    },
+    "forms": {
+      "style": "Use customized Shadcn UI forms. Inputs must have square corners (rounded-none or max rounded-sm), bg-[#0A0A0A], border-[#1F1F1F], and focus-visible:ring-[#CCFF00]."
+    },
+    "micro_interactions": {
+      "hover": "Text color shifts to #CCFF00. Subtle -translate-y-1 on cards. 1px solid border transition.",
+      "scroll": "Lime green scroll progress indicator fixed at the top of the viewport (h-1 bg-[#CCFF00]). Fade-up on scroll for all major sections using Framer Motion."
+    }
+  },
+  "assets_and_media": {
+    "images": {
+      "hero_background": {
+        "url": "https://images.unsplash.com/photo-1638864616275-9f0b291a2eb6?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODF8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMGRhcmslMjBnZW9tZXRyaWMlMjB0ZXh0dXJlfGVufDB8fHxibGFja3wxNzgyOTYwNzU0fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Deep black geometric texture to be used at low opacity (10-20%) behind the hero section."
+      }
+    },
+    "icons": {
+      "library": "react-icons",
+      "instructions": "Use react-icons/fi for interface icons, react-icons/si for tech stacks (SiLeetcode, SiCodechef, SiGithub, SiReact, etc.)."
+    }
+  },
+  "testing_requirements": {
+    "data_testid": "ALL interactive elements (buttons, links, form inputs, nav items) MUST include a kebab-case data-testid attribute based on their role (e.g., data-testid='contact-submit-button', data-testid='nav-about-link')."
+  },
+  "instructions_to_main_agent": [
+    "Install required dependencies: framer-motion, react-icons, clsx, tailwind-merge.",
+    "Add 'Outfit' and 'JetBrains Mono' via Google Fonts in index.html.",
+    "Setup Tailwind config with the specified colors and extended spacing/grid.",
+    "Build the application completely custom using HTML/Tailwind for layouts, and Shadcn UI ONLY for the Contact Form and complex interactive bits.",
+    "Implement the live data fetching proxy as requested in the problem statement for GitHub/LeetCode/CodeChef.",
+    "Ensure dark mode is the default and only mode if toggle is not explicitly requested, or build a toggle but optimize heavily for dark."
+  ]
+}
