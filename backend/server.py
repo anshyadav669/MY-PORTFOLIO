@@ -1,72 +1,330 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
+import asyncio
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
-from typing import List
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
+from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone
-
+import httpx
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
-# Create the main app without a prefix
-app = FastAPI()
-
-# Create a router with the /api prefix
+app = FastAPI(title="Ansh Portfolio API")
 api_router = APIRouter(prefix="/api")
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
-# Define Models
-class StatusCheck(BaseModel):
-    model_config = ConfigDict(extra="ignore")  # Ignore MongoDB's _id field
-    
+# ------------------- Simple in-memory TTL cache -------------------
+_CACHE: Dict[str, Dict[str, Any]] = {}
+CACHE_TTL_SECONDS = 60 * 30  # 30 minutes
+
+
+def cache_get(key: str) -> Optional[Any]:
+    entry = _CACHE.get(key)
+    if not entry:
+        return None
+    if (datetime.now(timezone.utc) - entry['ts']).total_seconds() > CACHE_TTL_SECONDS:
+        _CACHE.pop(key, None)
+        return None
+    return entry['data']
+
+
+def cache_set(key: str, data: Any) -> None:
+    _CACHE[key] = {'ts': datetime.now(timezone.utc), 'data': data}
+
+
+# ------------------- Models -------------------
+class ContactMessage(BaseModel):
+    model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    client_name: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    name: str
+    email: EmailStr
+    subject: Optional[str] = None
+    message: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
-class StatusCheckCreate(BaseModel):
-    client_name: str
 
-# Add your routes to the router instead of directly to app
+class ContactCreate(BaseModel):
+    name: str
+    email: EmailStr
+    subject: Optional[str] = None
+    message: str
+
+
+# ------------------- Basic route -------------------
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Ansh Portfolio API is live"}
 
-@api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
-    status_dict = input.model_dump()
-    status_obj = StatusCheck(**status_dict)
-    
-    # Convert to dict and serialize datetime to ISO string for MongoDB
-    doc = status_obj.model_dump()
-    doc['timestamp'] = doc['timestamp'].isoformat()
-    
-    _ = await db.status_checks.insert_one(doc)
-    return status_obj
 
-@api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
-    
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    
-    return status_checks
+# ------------------- Contact form -------------------
+@api_router.post("/contact")
+async def create_contact(payload: ContactCreate):
+    msg = ContactMessage(**payload.model_dump())
+    doc = msg.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.contact_messages.insert_one(doc)
+    logger.info(f"New contact message from {msg.email}")
+    return {"status": "success", "id": msg.id, "message": "Message received. I'll get back to you soon!"}
 
-# Include the router in the main app
+
+@api_router.get("/contact")
+async def list_contacts():
+    items = await db.contact_messages.find({}, {"_id": 0}).sort("created_at", -1).to_list(200)
+    return items
+
+
+# ------------------- GitHub proxy -------------------
+GITHUB_USER = "anshyadav669"
+
+
+@api_router.get("/github/stats")
+async def github_stats():
+    cached = cache_get("github_stats")
+    if cached:
+        return cached
+
+    async with httpx.AsyncClient(timeout=15.0) as hx:
+        headers = {"Accept": "application/vnd.github+json", "User-Agent": "ansh-portfolio"}
+        token = os.environ.get("GITHUB_TOKEN")
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+
+        try:
+            user_r = await hx.get(f"https://api.github.com/users/{GITHUB_USER}", headers=headers)
+            user_r.raise_for_status()
+            user = user_r.json()
+
+            repos_r = await hx.get(
+                f"https://api.github.com/users/{GITHUB_USER}/repos",
+                headers=headers,
+                params={"per_page": 100, "sort": "updated"},
+            )
+            repos_r.raise_for_status()
+            repos = repos_r.json()
+        except httpx.HTTPStatusError as e:
+            logger.error(f"GitHub API error: {e}")
+            raise HTTPException(status_code=502, detail="GitHub API error")
+        except Exception as e:
+            logger.error(f"GitHub fetch failed: {e}")
+            raise HTTPException(status_code=502, detail="GitHub fetch failed")
+
+    total_stars = sum(r.get("stargazers_count", 0) for r in repos)
+    total_forks = sum(r.get("forks_count", 0) for r in repos)
+
+    lang_counts: Dict[str, int] = {}
+    for r in repos:
+        lang = r.get("language")
+        if lang:
+            lang_counts[lang] = lang_counts.get(lang, 0) + 1
+    top_languages = sorted(lang_counts.items(), key=lambda x: x[1], reverse=True)[:6]
+
+    top_repos = sorted(
+        [r for r in repos if not r.get("fork")],
+        key=lambda r: (r.get("stargazers_count", 0), r.get("updated_at", "")),
+        reverse=True,
+    )[:6]
+
+    result = {
+        "username": user.get("login"),
+        "name": user.get("name"),
+        "avatar_url": user.get("avatar_url"),
+        "bio": user.get("bio"),
+        "public_repos": user.get("public_repos"),
+        "followers": user.get("followers"),
+        "following": user.get("following"),
+        "html_url": user.get("html_url"),
+        "total_stars": total_stars,
+        "total_forks": total_forks,
+        "top_languages": [{"name": n, "count": c} for n, c in top_languages],
+        "top_repos": [
+            {
+                "name": r["name"],
+                "description": r.get("description"),
+                "html_url": r["html_url"],
+                "stargazers_count": r.get("stargazers_count", 0),
+                "forks_count": r.get("forks_count", 0),
+                "language": r.get("language"),
+                "homepage": r.get("homepage"),
+                "updated_at": r.get("updated_at"),
+            }
+            for r in top_repos
+        ],
+    }
+    cache_set("github_stats", result)
+    return result
+
+
+# ------------------- LeetCode proxy -------------------
+LEETCODE_USER = "AnshKumarYadav"
+
+LEETCODE_QUERY = """
+query getUserProfile($username: String!) {
+  matchedUser(username: $username) {
+    username
+    profile { ranking reputation userAvatar realName }
+    submitStatsGlobal {
+      acSubmissionNum { difficulty count }
+    }
+  }
+  userContestRanking(username: $username) {
+    attendedContestsCount
+    rating
+    globalRanking
+    topPercentage
+    badge { name }
+  }
+  allQuestionsCount { difficulty count }
+}
+"""
+
+
+@api_router.get("/leetcode/stats")
+async def leetcode_stats():
+    cached = cache_get("leetcode_stats")
+    if cached:
+        return cached
+
+    async with httpx.AsyncClient(timeout=15.0) as hx:
+        try:
+            r = await hx.post(
+                "https://leetcode.com/graphql",
+                json={"query": LEETCODE_QUERY, "variables": {"username": LEETCODE_USER}},
+                headers={
+                    "Content-Type": "application/json",
+                    "Referer": f"https://leetcode.com/{LEETCODE_USER}/",
+                    "User-Agent": "Mozilla/5.0 ansh-portfolio",
+                },
+            )
+            r.raise_for_status()
+            data = r.json().get("data", {})
+        except Exception as e:
+            logger.error(f"LeetCode fetch failed: {e}")
+            raise HTTPException(status_code=502, detail="LeetCode fetch failed")
+
+    matched = data.get("matchedUser") or {}
+    contest = data.get("userContestRanking") or {}
+    all_counts = data.get("allQuestionsCount") or []
+    stats = matched.get("submitStatsGlobal", {}).get("acSubmissionNum", []) if matched else []
+
+    def by_diff(items, diff):
+        for it in items:
+            if it.get("difficulty") == diff:
+                return it.get("count", 0)
+        return 0
+
+    result = {
+        "username": matched.get("username") if matched else LEETCODE_USER,
+        "ranking": (matched.get("profile") or {}).get("ranking") if matched else None,
+        "total_solved": by_diff(stats, "All"),
+        "easy_solved": by_diff(stats, "Easy"),
+        "medium_solved": by_diff(stats, "Medium"),
+        "hard_solved": by_diff(stats, "Hard"),
+        "total_easy": by_diff(all_counts, "Easy"),
+        "total_medium": by_diff(all_counts, "Medium"),
+        "total_hard": by_diff(all_counts, "Hard"),
+        "contest_rating": int(contest.get("rating")) if contest.get("rating") else None,
+        "contests_attended": contest.get("attendedContestsCount"),
+        "global_ranking": contest.get("globalRanking"),
+        "top_percentage": contest.get("topPercentage"),
+        "badge": (contest.get("badge") or {}).get("name") if contest else None,
+        "profile_url": f"https://leetcode.com/u/{LEETCODE_USER}/",
+    }
+    cache_set("leetcode_stats", result)
+    return result
+
+
+# ------------------- CodeChef proxy (HTML scrape) -------------------
+CODECHEF_USER = "loop_hole39"
+
+
+@api_router.get("/codechef/stats")
+async def codechef_stats():
+    cached = cache_get("codechef_stats")
+    if cached:
+        return cached
+
+    url = f"https://www.codechef.com/users/{CODECHEF_USER}"
+    async with httpx.AsyncClient(timeout=20.0, follow_redirects=True) as hx:
+        try:
+            r = await hx.get(url, headers={"User-Agent": "Mozilla/5.0 ansh-portfolio"})
+            r.raise_for_status()
+            html = r.text
+        except Exception as e:
+            logger.error(f"CodeChef fetch failed: {e}")
+            raise HTTPException(status_code=502, detail="CodeChef fetch failed")
+
+    import re
+
+    def find(pattern, default=None, flags=re.S):
+        m = re.search(pattern, html, flags)
+        return m.group(1).strip() if m else default
+
+    current_rating = find(r'class="rating-number"[^>]*>\s*([\d?]+)')
+    highest_rating = find(r'Highest Rating\s*(\d+)')
+    stars = find(r'class="rating"[^>]*>([\d]?★|\?)')
+    global_rank = find(r'Global Rank[^<]*</span>\s*<a[^>]*><strong>([\d,]+)</strong>') or find(
+        r'Global Rank[^<]*</label>\s*<strong[^>]*>([\d,]+|NA)'
+    )
+    country_rank = find(r'Country Rank[^<]*</span>\s*<a[^>]*><strong>([\d,]+)</strong>') or find(
+        r'Country Rank[^<]*</label>\s*<strong[^>]*>([\d,]+|NA)'
+    )
+    # Fallback broader star match
+    if not stars:
+        stars_m = re.search(r'(\d)-Star|(\d)\s*★', html)
+        if stars_m:
+            stars = f"{stars_m.group(1) or stars_m.group(2)}★"
+
+    # Derive stars from rating if still missing
+    def stars_from_rating(rating_str):
+        try:
+            r = int(str(rating_str).replace(",", "").strip())
+        except (ValueError, TypeError):
+            return None
+        if r < 1400:
+            return "1★"
+        if r < 1600:
+            return "2★"
+        if r < 1800:
+            return "3★"
+        if r < 2000:
+            return "4★"
+        if r < 2200:
+            return "5★"
+        if r < 2500:
+            return "6★"
+        return "7★"
+
+    if not stars and current_rating:
+        stars = stars_from_rating(current_rating)
+
+    result = {
+        "username": CODECHEF_USER,
+        "current_rating": current_rating,
+        "highest_rating": highest_rating,
+        "stars": stars,
+        "global_rank": global_rank,
+        "country_rank": country_rank,
+        "profile_url": url,
+    }
+    cache_set("codechef_stats", result)
+    return result
+
+
 app.include_router(api_router)
 
 app.add_middleware(
@@ -77,12 +335,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

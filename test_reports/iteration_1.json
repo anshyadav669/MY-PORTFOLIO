@@ -1,0 +1,31 @@
+{
+  "summary": "First-pass smoke test of Ansh portfolio (backend + frontend). All 7 backend endpoints pass. All 8 frontend flows tested pass, including sections rendering, navigation, live stats display, contact form validation & successful submission with toast.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "GET /api/ -> 200 'Ansh Portfolio API is live'",
+    "GET /api/github/stats -> 200, username=anshyadav669, public_repos=1, followers=0, total_stars=1, top_repos array present",
+    "GET /api/leetcode/stats -> 200, AnshKumarYadav, total_solved=303, easy=122, medium=155, hard=26 (all non-negative ints)",
+    "GET /api/codechef/stats -> 200, username=loop_hole39, current_rating=1538, stars=2★",
+    "POST /api/contact valid payload -> 200 with status=success + id, persisted in Mongo",
+    "POST /api/contact invalid email -> 422 with pydantic value_error",
+    "POST /api/contact missing name+message -> 422",
+    "GET /api/contact -> 200 array of stored messages (2 present)",
+    "Hero renders 'Ansh Kumar Yadav'",
+    "Nav visible; nav-{about,skills,cp,github,projects,experience,contact}-link scroll to correct sections",
+    "About shows 3 education-item entries",
+    "Skills shows 4 skill-group entries",
+    "CP: LeetCode card renders 303/122/155/26; CodeChef card renders 1538 and 2★",
+    "GitHub Stats: profile card + repos grid render",
+    "Projects: both project-card-0 and project-card-1 render",
+    "Experience: 2 experience items + 4 achievements render",
+    "Contact form: invalid email keeps values (inline reject); valid submit clears form and shows success toast",
+    "Scroll progress bar and back-to-top button appear on scroll",
+    "No JS page errors observed"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true,
+  "notes": "Text-only assertion for LeetCode counter '303' returned false transiently due to count-up animation, but screenshot confirms final rendered values are correct. Toast 'Message sent. I'll get back to you shortly.' visible after valid contact submission. Live third-party integrations (GitHub, LeetCode, CodeChef) all returning real data (cached 30 min)."
+}
