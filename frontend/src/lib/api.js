@@ -13,6 +13,11 @@ export async function fetchGithubStats() {
     return data;
 }
 
+export async function fetchGithubContributions() {
+    const { data } = await api.get("/github/contributions");
+    return data;
+}
+
 export async function fetchLeetcodeStats() {
     const { data } = await api.get("/leetcode/stats");
     return data;

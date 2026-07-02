@@ -169,6 +169,47 @@ async def github_stats():
     return result
 
 
+# ------------------- GitHub contributions heatmap (no-auth) -------------------
+@api_router.get("/github/contributions")
+async def github_contributions():
+    cached = cache_get("github_contribs")
+    if cached:
+        return cached
+
+    url = f"https://github-contributions-api.jogruber.de/v4/{GITHUB_USER}?y=last"
+    async with httpx.AsyncClient(timeout=20.0) as hx:
+        try:
+            r = await hx.get(url, headers={"User-Agent": "ansh-portfolio"})
+            r.raise_for_status()
+            data = r.json()
+        except Exception as e:
+            logger.error(f"GitHub contributions fetch failed: {e}")
+            raise HTTPException(status_code=502, detail="Contribution graph unavailable")
+
+    contribs = data.get("contributions", [])
+    totals = data.get("total", {})
+    # Only keep last 365 days for consistent display
+    contribs = contribs[-365:]
+
+    total_count = sum(c.get("count", 0) for c in contribs)
+
+    result = {
+        "username": GITHUB_USER,
+        "total_last_year": total_count,
+        "yearly_totals": totals,
+        "days": [
+            {
+                "date": c.get("date"),
+                "count": c.get("count", 0),
+                "level": c.get("level", 0),
+            }
+            for c in contribs
+        ],
+    }
+    cache_set("github_contribs", result)
+    return result
+
+
 # ------------------- LeetCode proxy -------------------
 LEETCODE_USER = "AnshKumarYadav"
 

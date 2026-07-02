@@ -14,6 +14,7 @@ import { Experience } from "@/components/portfolio/Experience";
 import { Contact } from "@/components/portfolio/Contact";
 import { Footer } from "@/components/portfolio/Footer";
 import { ScrollProgress, BackToTop } from "@/components/portfolio/Chrome";
+import { ThemeProvider } from "@/lib/theme";
 
 const Home = () => (
     <div className="min-h-screen bg-ink-900 text-zinc-100 font-mono selection:bg-brand selection:text-black">
@@ -49,11 +50,13 @@ const Home = () => (
 
 function App() {
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<Home />} />
-            </Routes>
-        </BrowserRouter>
+        <ThemeProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                </Routes>
+            </BrowserRouter>
+        </ThemeProvider>
     );
 }
 

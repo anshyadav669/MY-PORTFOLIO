@@ -13,6 +13,30 @@
     --text: #f4f4f5;
     --text-muted: #a1a1aa;
     --text-dim: #52525b;
+    /* Heatmap levels (dark) */
+    --heat-0: #161616;
+    --heat-1: #253808;
+    --heat-2: #4a7100;
+    --heat-3: #85c700;
+    --heat-4: #ccff00;
+}
+
+[data-theme="light"] {
+    --bg: #fafaf9;
+    --surface: #ffffff;
+    --surface-2: #f4f4f5;
+    --border: #e4e4e7;
+    --border-subtle: rgba(0, 0, 0, 0.05);
+    --brand: #7aa900;
+    --brand-hover: #6a9500;
+    --text: #18181b;
+    --text-muted: #52525b;
+    --text-dim: #a1a1aa;
+    --heat-0: #ebedf0;
+    --heat-1: #d6f2a1;
+    --heat-2: #a3d647;
+    --heat-3: #6ea300;
+    --heat-4: #4a7100;
 }
 
 html {
@@ -26,6 +50,43 @@ body {
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* Light theme overrides for existing Tailwind ink and zinc utilities */
+[data-theme="light"] .bg-ink-900 { background-color: var(--bg) !important; }
+[data-theme="light"] .bg-ink-800 { background-color: var(--surface) !important; }
+[data-theme="light"] .bg-ink-700 { background-color: var(--surface-2) !important; }
+[data-theme="light"] .border-ink-600 { border-color: var(--border) !important; }
+[data-theme="light"] .border-ink-500 { border-color: #d4d4d8 !important; }
+
+[data-theme="light"] .text-zinc-100 { color: #18181b !important; }
+[data-theme="light"] .text-zinc-200 { color: #27272a !important; }
+[data-theme="light"] .text-zinc-300 { color: #3f3f46 !important; }
+[data-theme="light"] .text-zinc-400 { color: #52525b !important; }
+[data-theme="light"] .text-zinc-500 { color: #71717a !important; }
+[data-theme="light"] .text-zinc-600 { color: #a1a1aa !important; }
+[data-theme="light"] .placeholder\:text-zinc-600::placeholder { color: #a1a1aa !important; }
+
+/* Lime brand is too pale on white — swap to darker olive for text/borders in light mode */
+[data-theme="light"] .text-brand { color: #4a7100 !important; }
+[data-theme="light"] .border-brand { border-color: #7aa900 !important; }
+[data-theme="light"] .bg-brand { background-color: #ccff00 !important; }
+[data-theme="light"] .bg-brand:hover,
+[data-theme="light"] .hover\:bg-brand-hover:hover { background-color: #d9ff33 !important; }
+[data-theme="light"] .hover\:text-brand:hover { color: #4a7100 !important; }
+[data-theme="light"] .hover\:border-brand:hover { border-color: #7aa900 !important; }
+[data-theme="light"] .bg-black\/70 { background-color: rgba(255, 255, 255, 0.75) !important; }
+[data-theme="light"] .bg-black\/60 { background-color: rgba(255, 255, 255, 0.65) !important; }
+[data-theme="light"] .bg-black\/95 { background-color: rgba(255, 255, 255, 0.95) !important; }
+[data-theme="light"] .border-white\/10 { border-color: rgba(0, 0, 0, 0.1) !important; }
+[data-theme="light"] .selection\:bg-brand::selection,
+[data-theme="light"] *::selection { background: #ccff00 !important; color: #000 !important; }
+[data-theme="light"] body { background: var(--bg); color: var(--text); }
+[data-theme="light"] .bg-grid {
+    background-image:
+        linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
 }
 
 body::selection,

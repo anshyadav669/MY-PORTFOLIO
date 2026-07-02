@@ -3,6 +3,7 @@ import useSWR from "swr";
 import { Section, SectionHeader } from "./Section";
 import { fetchGithubStats } from "@/lib/api";
 import { Counter } from "./Counter";
+import { ContributionHeatmap } from "./ContributionHeatmap";
 import { SiGithub } from "react-icons/si";
 import { FiStar, FiGitBranch, FiUsers, FiExternalLink, FiCode } from "react-icons/fi";
 import { PROFILE } from "@/data/portfolio";
@@ -90,6 +91,9 @@ export const GithubStats = () => {
                         )}
                     </div>
                 </div>
+
+                {/* Contribution heatmap - full width */}
+                <ContributionHeatmap />
 
                 {/* Top repos */}
                 <div className="lg:col-span-6 grid md:grid-cols-2 lg:grid-cols-3 gap-6" data-testid="github-repos-grid">

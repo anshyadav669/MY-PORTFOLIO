@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { NAV, PROFILE } from "@/data/portfolio";
-import { FiDownload, FiMenu, FiX } from "react-icons/fi";
+import { FiDownload, FiMenu, FiX, FiSun, FiMoon } from "react-icons/fi";
+import { useTheme } from "@/lib/theme";
 
 export const Nav = () => {
     const [open, setOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const { theme, toggle } = useTheme();
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20);
@@ -51,6 +53,14 @@ export const Nav = () => {
                 </nav>
 
                 <div className="hidden md:flex items-center gap-3">
+                    <button
+                        onClick={toggle}
+                        aria-label="Toggle theme"
+                        className="w-9 h-9 flex items-center justify-center border border-ink-600 text-zinc-300 hover:text-brand hover:border-brand transition-colors"
+                        data-testid="theme-toggle"
+                    >
+                        {theme === "dark" ? <FiSun size={16} /> : <FiMoon size={16} />}
+                    </button>
                     <a
                         href={PROFILE.resumeUrl}
                         download
@@ -62,14 +72,24 @@ export const Nav = () => {
                     </a>
                 </div>
 
-                <button
-                    onClick={() => setOpen(!open)}
-                    className="md:hidden text-zinc-200 p-2"
-                    aria-label="Menu"
-                    data-testid="mobile-menu-toggle"
-                >
-                    {open ? <FiX size={22} /> : <FiMenu size={22} />}
-                </button>
+                <div className="md:hidden flex items-center gap-2">
+                    <button
+                        onClick={toggle}
+                        aria-label="Toggle theme"
+                        className="w-9 h-9 flex items-center justify-center border border-ink-600 text-zinc-300 hover:text-brand"
+                        data-testid="theme-toggle-mobile"
+                    >
+                        {theme === "dark" ? <FiSun size={16} /> : <FiMoon size={16} />}
+                    </button>
+                    <button
+                        onClick={() => setOpen(!open)}
+                        className="text-zinc-200 p-2"
+                        aria-label="Menu"
+                        data-testid="mobile-menu-toggle"
+                    >
+                        {open ? <FiX size={22} /> : <FiMenu size={22} />}
+                    </button>
+                </div>
             </div>
 
             {open && (

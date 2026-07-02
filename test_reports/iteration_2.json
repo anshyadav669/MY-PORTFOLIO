@@ -1,0 +1,40 @@
+{
+  "summary": "Iteration 2 tested new features (GitHub contribution heatmap + light/dark theme toggle) plus full regression. All 8 backend pytest cases pass. All frontend flows pass on desktop and mobile viewports. Contribution API returns 365 days with correct schema and is cached (2nd call <1.5s). Heatmap renders 365 cells, month labels JUL..JUN, 'contributions' header, and less→more legend. Theme toggle flips data-theme='light'/'dark' on <html>, persists across reload via localStorage['theme'], and works from both desktop (theme-toggle) and mobile (theme-toggle-mobile) buttons. Contact form still submits successfully in light mode with success toast.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "GET /api/github/contributions -> 200, username=anshyadav669, total_last_year=4 (int), yearly_totals dict, days array length=365, each entry has date/count/level (level 0-4)",
+    "Second call to /api/github/contributions is cached (<1.5s round trip)",
+    "Regression: /api/, /api/github/stats, /api/leetcode/stats, /api/codechef/stats, POST/GET /api/contact, 422 on invalid email - all pass",
+    "Desktop nav shows theme-toggle button; clicking flips data-theme dark <-> light",
+    "localStorage['theme'] persists across page reload (light stays light after F5)",
+    "Body bg in light mode = rgb(250,250,249) (off-white)",
+    "Mobile viewport (390x844) shows theme-toggle-mobile; clicking toggles theme (light -> dark verified)",
+    "ContributionHeatmap card [data-testid='github-contributions-card'] renders inside GitHub Stats section",
+    "365 heat cells rendered with data-testid='heat-cell-<date>'",
+    "Card shows '4 contributions' header, 'LESS' / 'MORE' legend, months JUL..JUN in order",
+    "Contact form submit in light mode returns success toast 'Message sent. I'll get back to you shortly.'",
+    "All existing testids (nav-*, project-card-0/1, contact-*-input, contact-submit-btn) still present",
+    "No JS console errors observed"
+  ],
+  "failed": [],
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_contributions.py",
+    "/app/test_reports/pytest/iteration_2.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Minor: /app/frontend/src/App.js still hardcodes Toaster theme='dark' and dark background colors on the toast; toast card remains dark even in light mode. Not blocking, but consider syncing toaster theme with useTheme() for polish.",
+    "Minor: Mobile theme-toggle-mobile border uses border-ink-600 which is light-mode compatible via [data-theme='light'] overrides. Confirmed no contrast issues.",
+    "Positive: 30 min in-memory TTL cache correctly reused for the new /api/github/contributions endpoint; matches pattern of existing endpoints."
+  ],
+  "updated_files": ["/app/backend/tests/test_contributions.py"],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "n/a (public portfolio, no auth)",
+  "seed_data_creation": "Two TEST contact messages inserted into Mongo (name='Iter2 UI' and 'Iter2 Light'). Safe to keep or clean up.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend contribution endpoint uses github-contributions-api.jogruber.de (public, no auth) and is cached for 30 min. Contact submit button testid is 'contact-submit-btn' (NOT '-button'). Theme is applied by setting data-theme on <html> and toggling Tailwind dark class. Light-mode brand olive #4A7100 visible on 'Yadav.' heading; buttons stay lime #CCFF00. Toast still uses hardcoded dark styling (see critical_code_review_comments).",
+  "rca of the issue": "No issues found."
+}
