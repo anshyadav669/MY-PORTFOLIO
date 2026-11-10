@@ -33,25 +33,37 @@ export const Contact: React.FC = () => {
     sound.playClick();
     setIsSubmitting(true);
 
-    // Save locally and trigger mailto
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      sound.playSuccess();
+    const encode = (data: Record<string, string>) => {
+      return Object.keys(data)
+        .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+        .join('&');
+    };
 
-      // Open user's email client formatted
-      const mailtoLink = `mailto:${RESUME_DATA.personal.email}?subject=${encodeURIComponent(
-        formData.subject || 'Portfolio Inquiry'
-      )}&body=${encodeURIComponent(
-        `From: ${formData.name} (${formData.email})\n\n${formData.message}`
-      )}`;
-      
-      try {
+    // Submits directly to Netlify Forms backend API
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: encode({ 'form-name': 'contact', ...formData }),
+    })
+      .then(() => {
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        sound.playSuccess();
+      })
+      .catch((error) => {
+        console.warn('Netlify form submission falling back to mail client:', error);
+        setIsSubmitting(false);
+        setIsSubmitted(true);
+        sound.playSuccess();
+
+        // Local dev or offline fallback: open email client
+        const mailtoLink = `mailto:${RESUME_DATA.personal.email}?subject=${encodeURIComponent(
+          formData.subject || 'Portfolio Inquiry'
+        )}&body=${encodeURIComponent(
+          `From: ${formData.name} (${formData.email})\n\n${formData.message}`
+        )}`;
         window.location.href = mailtoLink;
-      } catch {
-        // fallback
-      }
-    }, 900);
+      });
   };
 
   const copyEmail = () => {
@@ -224,17 +236,35 @@ export const Contact: React.FC = () => {
                     Transmission Dispatched!
                   </h4>
                   <p className="text-xs sm:text-sm text-neutral-300 font-sans max-w-md mx-auto">
-                    Thank you, <strong className="text-white">{formData.name}</strong>. Your message is dispatched and your email client has opened. I will respond to <strong className="text-[#FFD600]">{formData.email}</strong> shortly.
+                    Thank you, <strong className="text-white">{formData.name}</strong>. Your message has been transmitted and delivered directly to Ansh via Netlify. I will respond to <strong className="text-[#FFD600]">{formData.email}</strong> shortly.
                   </p>
                   <button
-                    onClick={() => setIsSubmitted(false)}
+                    onClick={() => {
+                      setIsSubmitted(false);
+                      setFormData({ name: '', email: '', subject: '', message: '' });
+                    }}
                     className="px-5 py-2.5 rounded-xl bg-[#171717] border border-white/[0.1] text-xs font-mono text-neutral-300 hover:text-[#FFD600] hover:border-[#FFD600] transition-colors"
                   >
                     Send Another Message
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form 
+                  name="contact" 
+                  method="POST" 
+                  data-netlify="true" 
+                  data-netlify-honeypot="bot-field" 
+                  onSubmit={handleSubmit} 
+                  className="space-y-5"
+                >
+                  {/* Hidden inputs required for Netlify Forms routing */}
+                  <input type="hidden" name="form-name" value="contact" />
+                  <p className="hidden">
+                    <label>
+                      Don&apos;t fill this out if you&apos;re human: <input name="bot-field" />
+                    </label>
+                  </p>
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     {/* Name */}
                     <div className="space-y-1.5">
@@ -243,6 +273,7 @@ export const Contact: React.FC = () => {
                       </label>
                       <input
                         type="text"
+                        name="name"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -258,6 +289,7 @@ export const Contact: React.FC = () => {
                       </label>
                       <input
                         type="email"
+                        name="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -274,6 +306,7 @@ export const Contact: React.FC = () => {
                     </label>
                     <input
                       type="text"
+                      name="subject"
                       required
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
@@ -288,6 +321,7 @@ export const Contact: React.FC = () => {
                       YOUR MESSAGE *
                     </label>
                     <textarea
+                      name="message"
                       required
                       rows={5}
                       value={formData.message}
