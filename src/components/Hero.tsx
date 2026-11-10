@@ -62,7 +62,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
   };
 
   return (
-    <section id="hero" className="relative min-h-screen pt-28 pb-16 lg:pt-36 lg:pb-24 flex flex-col justify-center overflow-hidden">
+    <section id="hero" className="relative z-10 min-h-screen pt-28 pb-16 lg:pt-36 lg:pb-24 flex flex-col justify-center overflow-hidden">
       {/* Background Gradients & Spotlights */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#FFD600]/8 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] bg-[#FF3838]/8 rounded-full blur-[140px] pointer-events-none" />

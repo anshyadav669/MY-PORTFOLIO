@@ -45,25 +45,28 @@
 
 /* Glassmorphism Classes */
 .glass-panel {
-  background: rgba(23, 23, 23, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(18, 18, 18, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .glass-card-interactive {
   position: relative;
-  background: rgba(23, 23, 23, 0.65);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(18, 18, 18, 0.68);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 35px -10px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.07);
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card-interactive:hover {
-  border-color: rgba(255, 214, 0, 0.45);
-  box-shadow: 0 0 25px -5px rgba(255, 214, 0, 0.25),
-              0 0 50px -15px rgba(255, 56, 56, 0.15);
+  border-color: rgba(255, 214, 0, 0.6);
+  box-shadow: 0 0 35px -5px rgba(255, 214, 0, 0.4),
+              0 0 65px -10px rgba(255, 56, 56, 0.22),
+              inset 0 1px 0 rgba(255, 214, 0, 0.35);
   transform: translateY(-4px);
 }
 

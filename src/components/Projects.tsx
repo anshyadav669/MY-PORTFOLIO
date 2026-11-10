@@ -36,7 +36,7 @@ export const Projects: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="relative py-24 lg:py-32 bg-[#080808] overflow-hidden border-t border-white/[0.06]">
+    <section id="projects" className="relative py-24 lg:py-32 bg-transparent overflow-hidden border-t border-white/[0.06] z-10">
       {/* Background Ambience */}
       <div className="absolute top-1/4 left-10 w-[500px] h-[500px] bg-[#FFD600]/5 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-10 w-[500px] h-[500px] bg-[#FF3838]/5 rounded-full blur-[160px] pointer-events-none" />

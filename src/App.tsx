@@ -14,6 +14,7 @@ import { Footer } from './components/Footer';
 import { ResumeModal } from './components/ResumeModal';
 import { CustomCursor } from './components/CustomCursor';
 import { Preloader } from './components/Preloader';
+import { CyberBackground } from './components/CyberBackground';
 
 export const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
@@ -60,7 +61,10 @@ export const App: React.FC = () => {
       {/* 1.8 - 2 Second High-Tech Initial Loading Screen */}
       {loading && <Preloader onComplete={() => setLoading(false)} />}
 
-      <div className="min-h-screen bg-[#080808] text-white selection:bg-[#FFD600] selection:text-black overflow-x-hidden font-sans">
+      <div className="min-h-screen bg-[#080808] text-white selection:bg-[#FFD600] selection:text-black overflow-x-hidden font-sans relative">
+        {/* Luminous Cyberpunk Interactive Background */}
+        <CyberBackground />
+
         {/* Interactive Custom Cursor */}
         <CustomCursor />
 

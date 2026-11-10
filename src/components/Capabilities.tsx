@@ -112,7 +112,7 @@ const FluidCard: React.FC<{
 
 export const Capabilities: React.FC = () => {
   return (
-    <section id="capabilities" className="relative py-24 lg:py-32 bg-[#080808] overflow-hidden border-t border-white/[0.06]">
+    <section id="capabilities" className="relative py-24 lg:py-32 bg-transparent overflow-hidden border-t border-white/[0.06] z-10">
       {/* Background Ambience */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-[#FFD600]/5 rounded-full blur-[160px] pointer-events-none" />
 

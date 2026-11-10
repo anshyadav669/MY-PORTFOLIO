@@ -88,7 +88,7 @@ export const Skills: React.FC = () => {
   });
 
   return (
-    <section id="skills" className="relative py-24 lg:py-32 bg-[#080808] overflow-hidden border-t border-white/[0.06]">
+    <section id="skills" className="relative py-24 lg:py-32 bg-transparent overflow-hidden border-t border-white/[0.06] z-10">
       {/* Background Lighting */}
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-[#FFD600]/5 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-80 h-80 bg-[#FF3838]/5 rounded-full blur-[140px] pointer-events-none" />

@@ -16,7 +16,7 @@ import {
 
 export const CodingProfiles: React.FC = () => {
   return (
-    <section id="profiles" className="relative py-24 lg:py-32 bg-[#080808] overflow-hidden border-t border-white/[0.06]">
+    <section id="profiles" className="relative py-24 lg:py-32 bg-transparent overflow-hidden border-t border-white/[0.06] z-10">
       {/* Background Lighting */}
       <div className="absolute top-1/2 left-1/4 w-[600px] h-[300px] bg-[#FFD600]/5 rounded-full blur-[150px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-[#FF3838]/5 rounded-full blur-[150px] pointer-events-none" />

@@ -81,7 +81,7 @@ export const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="relative py-24 lg:py-32 bg-[#080808] overflow-hidden border-t border-white/[0.06]">
+    <section id="contact" className="relative py-24 lg:py-32 bg-transparent overflow-hidden border-t border-white/[0.06] z-10">
       {/* Background Spotlights */}
       <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-[#FFD600]/8 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-[#FF3838]/8 rounded-full blur-[160px] pointer-events-none" />

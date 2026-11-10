@@ -5,7 +5,7 @@ import { GraduationCap, Award, Calendar, MapPin, CheckCircle, Sparkles } from 'l
 
 export const Education: React.FC = () => {
   return (
-    <section id="education" className="relative py-24 lg:py-32 bg-[#080808] overflow-hidden border-t border-white/[0.06]">
+    <section id="education" className="relative py-24 lg:py-32 bg-transparent overflow-hidden border-t border-white/[0.06] z-10">
       {/* Background Lighting */}
       <div className="absolute top-1/2 right-10 w-96 h-96 bg-[#FFD600]/5 rounded-full blur-[150px] pointer-events-none" />
 

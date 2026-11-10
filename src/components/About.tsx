@@ -51,7 +51,7 @@ export const About: React.FC = () => {
   ];
 
   return (
-    <section id="about" className="relative py-24 lg:py-32 bg-[#080808] overflow-hidden border-t border-white/[0.06]">
+    <section id="about" className="relative py-24 lg:py-32 bg-transparent overflow-hidden border-t border-white/[0.06] z-10">
       {/* Background Lighting & Grid */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#FFD600]/5 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-0 w-96 h-96 bg-[#FF3838]/5 rounded-full blur-[140px] pointer-events-none" />

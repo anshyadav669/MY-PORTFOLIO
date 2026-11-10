@@ -11,7 +11,7 @@ const iconMap = {
 
 export const Philosophy: React.FC = () => {
   return (
-    <section id="philosophy" className="relative py-24 lg:py-32 bg-[#080808] overflow-hidden border-t border-white/[0.06]">
+    <section id="philosophy" className="relative py-24 lg:py-32 bg-transparent overflow-hidden border-t border-white/[0.06] z-10">
       {/* Background Ambience */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#FFD600]/5 rounded-full blur-[160px] pointer-events-none" />
 
