@@ -63,7 +63,7 @@ SKILLS
 
 ACHIEVEMENTS & COMPETITIVE PROGRAMMING
 • Solved 400+ problems on LeetCode.
-• Achieved 2-Star Coder status on CodeChef.
+• Achieved 4-Star Coder status on CodeChef.
 • Secured Rank 31 in a CodeChef contest.
     `.trim();
 
@@ -300,7 +300,7 @@ ACHIEVEMENTS & COMPETITIVE PROGRAMMING
             </h2>
             <ul className="list-disc list-inside text-xs text-neutral-800 space-y-0.5 pl-1">
               <li>Solved 400+ problems on LeetCode, strengthening algorithmic reasoning and coding proficiency.</li>
-              <li>Achieved 2-Star Coder status on CodeChef.</li>
+              <li>Achieved 4-Star Coder status on CodeChef.</li>
               <li>Secured Rank 31 in a CodeChef contest.</li>
             </ul>
           </div>

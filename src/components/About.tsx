@@ -28,7 +28,7 @@ export const About: React.FC = () => {
       title: "Algorithmic Rigor",
       subtitle: "Competitive Programming",
       metric: "400+ Solved",
-      desc: "Solved over 400 algorithmic challenges on LeetCode. Achieved 2-Star Coder status on CodeChef and secured Rank 31 in an international timed programming contest.",
+      desc: "Solved over 400 algorithmic challenges on LeetCode. Achieved 4-Star Coder status on CodeChef and secured Rank 31 in an international timed programming contest.",
       icon: Code2,
       accent: "#FFE94A"
     },
@@ -149,7 +149,7 @@ export const About: React.FC = () => {
                 </p>
 
                 <p>
-                  In competitive programming, I have solved <span className="text-[#FFD600] font-bold">400+ problems on LeetCode</span>, achieved <span className="text-[#FFD600] font-bold">2-Star Coder status on CodeChef</span>, and secured <span className="text-[#FFD600] font-bold">Global Rank 31</span> in a CodeChef contest. These experiences led me to serve as a <strong className="text-white">Problem Setter</strong> at NIT Silchar, where I design algorithmic problems and boundary test cases for institute competitions with 100+ participants.
+                  In competitive programming, I have solved <span className="text-[#FFD600] font-bold">400+ problems on LeetCode</span>, achieved <span className="text-[#FFD600] font-bold">4-Star Coder status on CodeChef</span>, and secured <span className="text-[#FFD600] font-bold">Global Rank 31</span> in a CodeChef contest. These experiences led me to serve as a <strong className="text-white">Problem Setter</strong> at NIT Silchar, where I design algorithmic problems and boundary test cases for institute competitions with 100+ participants.
                 </p>
 
                 <p>

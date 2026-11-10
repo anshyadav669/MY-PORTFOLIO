@@ -84,12 +84,12 @@ export const RESUME_DATA = {
       "Algorithmic Problem Setter",
       "Full-Stack Web Engineer"
     ],
-    summary: "Aspiring Software Engineer and B.Tech student at National Institute of Technology, Silchar (CGPA 8.12). Proven track record in solving 400+ algorithmic problems on LeetCode and achieving 2-Star status (Global Rank 31) on CodeChef. Experienced in building Retrieval-Augmented Generation (RAG) AI systems, deep learning speech emotion audio classifiers, and responsive web applications for early-stage startups."
+    summary: "Aspiring Software Engineer and B.Tech student at National Institute of Technology, Silchar (CGPA 8.12). Proven track record in solving 400+ algorithmic problems on LeetCode and achieving 4-Star status (Global Rank 31) on CodeChef. Experienced in building Retrieval-Augmented Generation (RAG) AI systems, deep learning speech emotion audio classifiers, and responsive web applications for early-stage startups."
   },
 
   stats: [
     { label: "Problems Solved", value: "400+", subtext: "LeetCode Algorithmic Mastery" },
-    { label: "CodeChef Rank", value: "31", subtext: "Secured in Global Contest (2-Star)" },
+    { label: "CodeChef Rank", value: "31", subtext: "Secured in Global Contest (4-Star)" },
     { label: "Academic CGPA", value: "8.12", subtext: "NIT Silchar Engineering" },
     { label: "Contest Creator", value: "100+", subtext: "Participants in NIT Contests" },
   ],
@@ -359,15 +359,15 @@ export const RESUME_DATA = {
       username: "anshyadav669",
       url: "https://www.codechef.com/users/anshyadav669",
       accent: "#5B4638",
-      badge: "2-Star Coder ★★★",
+      badge: "4-Star Coder ★★★★",
       stats: [
-        { label: "Star Rating", value: "2-Star", detail: "Verified CodeChef Coder" },
+        { label: "Star Rating", value: "4-Star", detail: "Verified CodeChef 4★" },
         { label: "Contest Rank", value: "Rank 31", detail: "Secured in CodeChef Contest" },
         { label: "Problem Type", value: "Ad-hoc & Math", detail: "Speed & Accuracy" },
         { label: "Track Record", value: "Top Performer", detail: "Contest Performance" }
       ],
       highlights: [
-        "Achieved 2-Star Coder status through competitive contest participation",
+        "Achieved prestigious 4-Star Coder status on CodeChef through consistent algorithmic contest mastery",
         "Secured impressive Rank 31 in a competitive CodeChef contest",
         "Proven ability to solve complex problems under strict timed conditions"
       ]
@@ -473,9 +473,9 @@ export const RESUME_DATA = {
       category: "Competitive Coding"
     },
     {
-      title: "Achieved 2-Star Coder on CodeChef",
-      description: "Recognized as a verified 2-Star Coder through consistent competitive contest performances against global peers.",
-      badge: "2-Star Coder",
+      title: "Achieved 4-Star Coder on CodeChef",
+      description: "Recognized as a verified 4-Star Coder through consistent competitive contest performances against global peers.",
+      badge: "4-Star Coder",
       category: "Global Ranking"
     },
     {

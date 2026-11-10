@@ -1,6 +1,6 @@
 # Ansh Kumar Yadav — Award-Winning Personal Developer Portfolio
 
-An extraordinary, futuristic personal developer portfolio built for **Ansh Kumar Yadav**, undergraduate software engineer at the **National Institute of Technology, Silchar** (CGPA: 8.12), 400+ LeetCode solver, CodeChef 2-Star Coder (Rank 31), and startup web developer.
+An extraordinary, futuristic personal developer portfolio built for **Ansh Kumar Yadav**, undergraduate software engineer at the **National Institute of Technology, Silchar** (CGPA: 8.12), 400+ LeetCode solver, CodeChef 4-Star Coder (Rank 31), and startup web developer.
 
 ## 🚀 Live Visual & Design Identity
 - **Palette**: Deep Black (`#080808`), Electric Yellow (`#FFD600`), Bright Yellow Highlight (`#FFE94A`), and Subtle Red Accent (`#FF3838`).
@@ -72,7 +72,7 @@ An extraordinary, futuristic personal developer portfolio built for **Ansh Kumar
 │       ├── Projects.tsx       # Vertically stacked full-width cinematic showcase (5 projects)
 │       ├── ProjectModal.tsx   # Architectural deep-dive & pipeline breakdown modal
 │       ├── PasswordGenLiveDemo.tsx # Live interactive password generator testbench
-│       ├── CodingProfiles.tsx # LeetCode (400+), CodeChef (2-Star, Rank 31), GitHub
+│       ├── CodingProfiles.tsx # LeetCode (400+), CodeChef (4-Star, Rank 31), GitHub
 │       ├── Experience.tsx     # Startup web development & NIT Silchar Problem Setter
 │       ├── Education.tsx      # NIT Silchar (8.12 CGPA), Bakshi's (91%), Vidyashram (90.8%)
 │       ├── Philosophy.tsx     # 3 engineering core principles (replaces fake testimonials)
@@ -93,7 +93,7 @@ An extraordinary, futuristic personal developer portfolio built for **Ansh Kumar
 - **GitHub**: `https://github.com/anshyadav669`
 - **LinkedIn**: `https://linkedin.com/in/ansh-kumar-yadav`
 - **LeetCode**: `https://leetcode.com/u/anshyadav669` (400+ Problems Solved)
-- **CodeChef**: `https://www.codechef.com/users/anshyadav669` (2-Star Coder, Rank 31)
+- **CodeChef**: `https://www.codechef.com/users/anshyadav669` (4-Star Coder, Rank 31)
 - **College**: National Institute of Technology, Silchar — B.Tech (2024–2028), CGPA: 8.12
 - **Schooling**: Bakshi's Springdales School, Kota (HSC: 91%), Vidyashram Public School, Kota (SSC: 90.8%)
 - **Projects**:

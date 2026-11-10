@@ -225,10 +225,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                 rel="noreferrer"
                 onMouseEnter={() => sound.playHover()}
                 className="px-2.5 py-1.5 rounded-lg bg-[#111111] border border-white/[0.08] hover:border-[#FFD600] text-neutral-400 hover:text-[#FFD600] transition-all text-xs font-mono flex items-center gap-1.5"
-                title="CodeChef (2-Star, Rank 31)"
+                title="CodeChef (4-Star, Rank 31)"
               >
                 <Award className="w-3.5 h-3.5 text-[#FFD600]" />
-                <span>CodeChef 2★</span>
+                <span>CodeChef 4★</span>
               </a>
 
               <a
