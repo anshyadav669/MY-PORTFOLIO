@@ -12,7 +12,8 @@ import {
   Check, 
   Code2, 
   Sparkles, 
-  Terminal 
+  Terminal,
+  Award 
 } from 'lucide-react';
 
 export const Contact: React.FC = () => {
@@ -213,6 +214,17 @@ export const Contact: React.FC = () => {
                     title="LeetCode (400+ Solved)"
                   >
                     <Code2 className="w-4 h-4" />
+                  </a>
+
+                  <a
+                    href={RESUME_DATA.personal.codechefUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onMouseEnter={() => sound.playHover()}
+                    className="p-2.5 rounded-xl bg-[#111111] border border-white/[0.08] hover:border-[#FFD600] text-neutral-300 hover:text-[#FFD600] transition-all hover:scale-110"
+                    title="CodeChef (4-Star, Rank 31)"
+                  >
+                    <Award className="w-4 h-4 text-[#FFD600]" />
                   </a>
                 </div>
               </div>

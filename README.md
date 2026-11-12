@@ -92,8 +92,8 @@ An extraordinary, futuristic personal developer portfolio built for **Ansh Kumar
 - **Mobile**: `+91-9928943270`
 - **GitHub**: `https://github.com/anshyadav669`
 - **LinkedIn**: `https://linkedin.com/in/ansh-kumar-yadav`
-- **LeetCode**: `https://leetcode.com/u/anshyadav669` (400+ Problems Solved)
-- **CodeChef**: `https://www.codechef.com/users/anshyadav669` (4-Star Coder, Rank 31)
+- **LeetCode**: `https://leetcode.com/u/AnshKumarYadav/` (400+ Problems Solved)
+- **CodeChef**: `https://www.codechef.com/users/loop_hole39` (4-Star Coder, Rank 31)
 - **College**: National Institute of Technology, Silchar — B.Tech (2024–2028), CGPA: 8.12
 - **Schooling**: Bakshi's Springdales School, Kota (HSC: 91%), Vidyashram Public School, Kota (SSC: 90.8%)
 - **Projects**:

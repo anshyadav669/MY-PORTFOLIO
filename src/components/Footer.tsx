@@ -164,9 +164,18 @@ export const Footer: React.FC = () => {
               target="_blank"
               rel="noreferrer"
               className="text-neutral-400 hover:text-[#FFA116] transition-colors"
-              title="LeetCode"
+              title="LeetCode (400+ Solved)"
             >
               <Code2 className="w-4 h-4" />
+            </a>
+            <a
+              href={RESUME_DATA.personal.codechefUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-neutral-400 hover:text-[#FFD600] transition-colors"
+              title="CodeChef (4-Star, Rank 31)"
+            >
+              <Award className="w-4 h-4" />
             </a>
             <a
               href={`mailto:${RESUME_DATA.personal.email}`}

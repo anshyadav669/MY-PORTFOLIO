@@ -76,8 +76,8 @@ export const RESUME_DATA = {
     githubUsername: "anshyadav669",
     linkedinUrl: "https://linkedin.com/in/ansh-kumar-yadav",
     linkedinUsername: "ansh-kumar-yadav",
-    leetcodeUrl: "https://leetcode.com/u/anshyadav669",
-    codechefUrl: "https://www.codechef.com/users/anshyadav669",
+    leetcodeUrl: "https://leetcode.com/u/AnshKumarYadav/",
+    codechefUrl: "https://www.codechef.com/users/loop_hole39",
     roles: [
       "Software Developer",
       "Machine Learning Builder",
@@ -338,8 +338,8 @@ export const RESUME_DATA = {
   codingProfiles: [
     {
       platform: "LeetCode" as const,
-      username: "anshyadav669",
-      url: "https://leetcode.com/u/anshyadav669",
+      username: "AnshKumarYadav",
+      url: "https://leetcode.com/u/AnshKumarYadav/",
       accent: "#FFA116",
       badge: "400+ Problems Solved",
       stats: [
@@ -356,8 +356,8 @@ export const RESUME_DATA = {
     },
     {
       platform: "CodeChef" as const,
-      username: "anshyadav669",
-      url: "https://www.codechef.com/users/anshyadav669",
+      username: "loop_hole39",
+      url: "https://www.codechef.com/users/loop_hole39",
       accent: "#5B4638",
       badge: "4-Star Coder ★★★★",
       stats: [
