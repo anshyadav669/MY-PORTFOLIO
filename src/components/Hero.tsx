@@ -73,15 +73,19 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
         <div className="ruler-top mb-3 opacity-60" />
         <div className="flex flex-wrap items-center justify-between text-[11px] font-mono text-neutral-400 gap-3">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#FFD600] inline-block animate-pulse" />
-            <span className="text-[#FFD600] font-bold">STATUS: AVAILABLE</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse shadow-[0_0_8px_#34d399]" />
+            <span className="text-emerald-400 font-bold">STATUS: AVAILABLE FOR WORK</span>
             <span className="text-white/20">|</span>
-            <span>SYSTEM.DEV_ENV: ONLINE</span>
+            <span>SYSTEM.CORE: ONLINE</span>
+            <span className="text-white/20 hidden sm:inline">|</span>
+            <span className="text-[#FFD600] font-bold hidden sm:inline">CODECHEF 4★ [RATING 1800+]</span>
           </div>
           <div className="hidden md:flex items-center gap-4">
-            <span>LOCATION: NIT SILCHAR, ASSAM [24.83° N, 92.77° E]</span>
+            <span>NIT SILCHAR [24.83° N, 92.77° E]</span>
             <span className="text-white/20">|</span>
-            <span className="text-[#FF3838]">CGPA: 8.12 / 10.0</span>
+            <span className="text-[#FF3838] font-bold">CGPA: 8.12</span>
+            <span className="text-white/20">|</span>
+            <span className="text-[#FFD600] font-bold">400+ LEETCODE</span>
           </div>
         </div>
       </div>
@@ -131,15 +135,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
               {RESUME_DATA.stats.map((stat, idx) => (
                 <div
                   key={idx}
-                  className="p-3 rounded-xl bg-[#111111]/80 border border-white/[0.08] hover:border-[#FFD600]/40 transition-all hover:translate-y-[-2px] group"
+                  className="relative p-3.5 rounded-xl bg-[#111111]/85 backdrop-blur-md border border-white/[0.08] hover:border-[#FFD600]/60 transition-all duration-300 hover:translate-y-[-3px] hover:shadow-[0_0_25px_rgba(255,214,0,0.2)] group overflow-hidden"
                 >
-                  <div className="text-xl sm:text-2xl font-black font-grotesk text-[#FFD600] group-hover:text-white transition-colors">
+                  <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-br from-[#FFD600]/10 to-transparent rounded-bl-xl pointer-events-none group-hover:from-[#FFD600]/25 transition-colors" />
+                  <div className="text-2xl sm:text-3xl font-black font-grotesk text-[#FFD600] group-hover:text-white transition-colors tracking-tight">
                     {stat.value}
                   </div>
-                  <div className="text-[11px] font-mono font-semibold text-neutral-300 mt-0.5">
+                  <div className="text-[11px] font-mono font-semibold text-neutral-200 mt-1">
                     {stat.label}
                   </div>
-                  <div className="text-[9px] text-neutral-500 truncate">
+                  <div className="text-[9px] text-neutral-400 truncate mt-0.5">
                     {stat.subtext}
                   </div>
                 </div>
